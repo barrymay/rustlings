@@ -20,7 +20,6 @@
 //
 // No hints this time!
 
-// I AM NOT DONE
 
 pub enum Command {
     Uppercase,
@@ -29,15 +28,29 @@ pub enum Command {
 }
 
 mod my_module {
+    use std::usize;
+
     use super::Command;
 
     // TODO: Complete the function signature!
-    pub fn transformer(input: ???) -> ??? {
+    pub fn transformer(mut input: Vec<(&str, Command)>) -> Vec<String> {
         // TODO: Complete the output declaration!
-        let mut output: ??? = vec![];
-        for (string, command) in input.iter() {
-            // TODO: Complete the function body. You can do it!
+        let mut output: Vec<String> = vec![];
+        for (str, command) in input.iter() {
+            match command {
+                Command::Uppercase => output.push(str.to_uppercase()),
+                Command::Trim => output.push(str.trim().to_string()),
+                Command::Append(mut repeatCount) => {
+                    let mut result: String = str.to_string();
+                    while repeatCount > 0 {
+                        result.push_str("bar");
+                        repeatCount -= 1;
+                    }
+                    output.push(result)
+                }
+            }
         }
+
         output
     }
 }
@@ -45,17 +58,19 @@ mod my_module {
 #[cfg(test)]
 mod tests {
     // TODO: What do we need to import to have `transformer` in scope?
-    use ???;
     use super::Command;
+    use crate::my_module;
 
     #[test]
     fn it_works() {
-        let output = transformer(vec![
+        let output = my_module::transformer(vec![
             ("hello".into(), Command::Uppercase),
             (" all roads lead to rome! ".into(), Command::Trim),
-            ("foo".into(), Command::Append(1)),
+            ("foo", Command::Append(1)),
             ("bar".into(), Command::Append(5)),
         ]);
+        println!("RESULT {:?}", output);
+
         assert_eq!(output[0], "HELLO");
         assert_eq!(output[1], "all roads lead to rome!");
         assert_eq!(output[2], "foobar");

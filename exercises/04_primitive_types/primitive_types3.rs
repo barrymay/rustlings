@@ -5,10 +5,15 @@
 // Execute `rustlings hint primitive_types3` or use the `hint` watch subcommand
 // for a hint.
 
-// I AM NOT DONE
 
 fn main() {
-    let a = ???
+    let mut x = 1;
+    let mut a = vec![1;120];
+    a.fill_with(|| {
+      x += 1;
+      1 * x
+    });
+    println!("TEST {:?}", a);
 
     if a.len() >= 100 {
         println!("Wow, that's a big array!");
